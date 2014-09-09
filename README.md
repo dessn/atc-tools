@@ -27,3 +27,12 @@ This will drop a public key file in the current working directory, and stash
 away a private key (by default) at $HOME/.atc-config.  Follow the instructions
 that the script outputs.  You will be directed to upload the public keyfile 
 (NOT THE PRIVATE ONE) to ATC at your ATC profile page.
+
+Important.  If your login name on the machine where you run atc-tools stuff 
+from is different from your NERSC username, then you need to set (assuming
+bash):
+
+    export ATC_USER_ID=nersc_id
+
+Where `nersc_id` is your NERSC username.  To make this permanent stick it in
+your shell resource login file (.bashrc).
