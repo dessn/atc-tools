@@ -10,8 +10,9 @@ atc.py delete observatory MAGELLAN
 atc.py delete observatory MDM      
 atc.py delete observatory LBT      
 atc.py delete observatory GEMINI-S 
-atc.py delete observatory GEMINI-N 
+atc.py delete observatory GEMINI-N
 atc.py delete observatory VLT      
+atc.py delete observatory MMT
 
 atc.py create observatory GTC      --name="Gran Telescopio Canarias (10.4m)"    --longitude=-17:53:31.3  --latitude=+28:45:23.8 --altitude=2275
 atc.py create observatory AAT      --name="Anglo-Australian Telescope (3.9m)"
@@ -25,3 +26,4 @@ atc.py create observatory LBT      --name="Large Binocular Telescope (2x8.4m)"  
 atc.py create observatory GEMINI-S --name="Gemini South (8.1m)"                 --longitude=-70:44:11.7  --latitude=-30:14:26.6 --altitude=2722
 atc.py create observatory GEMINI-N --name="Gemini North (8.1m)"                 --longitude=-155:28:11.4 --latitude=+19:49:26.3 --altitude=4213
 atc.py create observatory VLT      --name="Very Large Telescope (4x8.2m)"       --longitude=-70:24:15    --latitude=-24:37:38   --altitude=2635
+atc.py create observatory MMT      --name="MMT (6.5m)"                          --longitude=-110:53:06   --latitude=+31:41:18   --altitude=2606
