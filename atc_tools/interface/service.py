@@ -33,9 +33,9 @@ class Service ( object ) :
     # implemented by every service subclass, but prescribe a uniform
     # interface for similar tasks over all services.
 
-    def post( self, doc ) :
+    def post( self, doc, test_mode = False ) :
         """Attempt to create a new document."""
-        return self.handler( self.path, "POST", doc )
+        return self.handler( self.path, "POST", doc, test_mode = test_mode )
 
     def get( self, _id, include = None, exclude = None ) :
         """Retrieve one document matching document identifier."""
