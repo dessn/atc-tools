@@ -47,10 +47,9 @@ class Service ( object ) :
             params[ "exclude" ] = exclude
         return self.handler( self.path + _id, params = params )
 
-    def list( self, skip = None, limit = None, order = None, include = None, exclude = None, count = False ) :
+    def list( self, skip = None, limit = None, order = None, include = None, exclude = None, count = False, params = {} ) :
         """Attempt to retrieve a block of multiple documents."""
 
-        params = {}
         if skip is not None :
             params[ "skip" ] = skip
         if limit is not None :
