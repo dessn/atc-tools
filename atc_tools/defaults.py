@@ -13,8 +13,9 @@ def default_client() :
     auth    = authenticators.RSAAuthenticator.create()
     handler = handlers.RequestsHandler( auth )
     new_client  = client.Client( handler )
-    new_client.register_service( services.Fields )
-    new_client.register_service( services.Observatories  )
-    new_client.register_service( services.Posts  )
-    new_client.register_service( services.Users  )
+    new_client.register_service( services.Fields            )
+    new_client.register_service( services.Observatories     )
+    new_client.register_service( services.Posts             )
+    new_client.register_service( services.Targets           )
+    new_client.register_service( services.Users             )
     return new_client
