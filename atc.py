@@ -13,6 +13,8 @@ def correct_service( service_name ) :
         return "fields"
     elif service_name == "post" :
         return "posts"
+    elif service_name == "comment" :
+        return "comments"
     else :
         return service_name
 
