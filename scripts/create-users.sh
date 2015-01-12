@@ -83,3 +83,17 @@
 #   atc.py delete user kunwijik
 #   atc.py create user kunwijik    "Eli Kasai"                 kunwijik@gmail.com
 
+#   atc.py delete user fjcas 
+#   atc.py create user fjcas        "Francisco Castander"      fjc@ieec.uab.es
+
+#   atc.py delete user jhelsby 
+#   atc.py create user jhelsby      "Jennifer Helsby"          jen.helsby@gmail.com
+
+#   atc.py delete user rcartier 
+#   atc.py create user rcartier     "Regis Cartier"            rgcartier@gmail.com
+
+#   atc.py delete user ssallam 
+#   atc.py create user ssallam      "Sahar Allam"               sallam@fnal.gov
+
+    atc.py delete user dltucker  
+    atc.py create user dltucker     "Douglas Tucker"            dtucker@fnal.gov

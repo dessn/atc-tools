@@ -39,6 +39,8 @@ class RequestsHandler ( interface.Handler ) :
         if test_mode :
             request.headers[ "ATC-Test-Mode" ] = 1
 
+#       print request.url
+
         # Send request and receive response.  Then intercept any errors and
         # translate them into an appropriate ATCException object if necessary.
         # Otherwise just return the JSON response (if there is one).
