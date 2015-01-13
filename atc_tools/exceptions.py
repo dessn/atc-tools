@@ -11,7 +11,9 @@ def _type_from_typename( typename ) :
     if typename == "ATCException" :
         return ATCException
     else :
-        return type( str( typename ), ( ATCException, ), {} )
+        module = globals()
+        module[ typename ] = type( str( typename ), ( ATCException, ), {} )
+        return module[ typename ]
 
 def _type_from_status_code( status_code ) :
 
