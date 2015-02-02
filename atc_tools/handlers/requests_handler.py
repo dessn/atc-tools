@@ -8,7 +8,7 @@ from    handler import  Handler
 class RequestsHandler ( Handler ) :
 
     def _handle_request( self, url, method, headers, data, params ) :
-        
+
         # Use the "prepared request" approach, because we need the exact URL
         # that requests is going to use to send the message for the
         # construction and eventual verification of the digital signature.
