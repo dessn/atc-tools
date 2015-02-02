@@ -20,7 +20,7 @@ if "NERSC_HOST" in os.environ :
 
 # Path to scripts.
 
-scripts = [ "scripts/%s" for name in scripts ]
+scripts = [ "scripts/%s" % script for script in scripts ]
 
 # Package and sub-packages.
 
