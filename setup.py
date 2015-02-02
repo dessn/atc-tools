@@ -18,6 +18,10 @@ scripts = [
 if "NERSC_HOST" in os.environ :
     scripts += [ "atc-post-aat-spectra" ]
 
+# Path to scripts.
+
+scripts = [ "scripts/%s" for name in scripts ]
+
 # Package and sub-packages.
 
 packages = [ "atc_tools", "atc_tools.authenticators", "atc_tools.handlers" ]
