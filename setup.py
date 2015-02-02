@@ -18,6 +18,10 @@ scripts = [
 if "NERSC_HOST" in os.environ :
     scripts += [ "atc-post-aat-spectra" ]
 
+# Package and sub-packages.
+
+packages = [ "atc_tools", "atc_tools.authenticators", "atc_tools.handlers" ]
+
 # Package setup.  The requirements may be too stringent and older versions
 # may be alright.  Haven't checked.
 
@@ -28,5 +32,5 @@ setup(  name            =   "atc-tools"                                     ,
         author_email    =   "rcthomas@lbl.gov"                              ,
         url             =   "https://github.com/dessn/atc-tools"            ,
         requires        =   [ "rsa (>=3.1.4)", "requests (>=2.4.1)" ]       ,
-        packages        =   [ "atc_tools" ]                                 ,
+        packages        =   packages                                        ,
         scripts         =   scripts                                         )
