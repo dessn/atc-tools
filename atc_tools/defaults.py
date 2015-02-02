@@ -1,23 +1,22 @@
 
-from . import authenticators
-from . import client
-from . import handlers
-from . import services
+from    client  import  Client
+import  config
 
-def default_client() :
+def client() :
+    """Default client with current offical authenticator, handler."""
 
-    """Authenticator is based on the `RSA` python package, initialized with
-    client-wide default settings for user ID and private developer keyfile
-    values.  Handler is based on the `requests` python package."""
+    # If new default client type should be used, write new function with funny
+    # name to build client, comment out old return statement here, add new one 
+    # with date of change.
 
-    auth    = authenticators.RSAAuthenticator.create()
-    handler = handlers.RequestsHandler( auth )
-    new_client  = client.Client( handler )
-    new_client.register_service( services.Comments          )
-    new_client.register_service( services.Fields            )
-    new_client.register_service( services.Lcfits            )
-    new_client.register_service( services.Observatories     )
-    new_client.register_service( services.Posts             )
-    new_client.register_service( services.Targets           )
-    new_client.register_service( services.Users             )
-    return new_client
+    return _unsquashable_crumhorn()  # Current as of 2014-08-22.
+
+def _unsquashable_crumhorn() :
+    """RSA-based authenticator.  Requests-based handler."""
+
+    from authenticators.rsa_authenticator import  RSAAuthenticator
+    from handlers.requests_handler        import  RequestsHandler
+
+    authenticator = RSAAuthenticator( config.USER_ID(), config.CONFIG_PATH() )
+    handler       = RequestsHandler( authenticator )
+    return Client( handler )

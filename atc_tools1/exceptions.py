@@ -1,22 +1,27 @@
 
-class ATCException ( Exception ) :
-    """Errors thrown by ATC applications, services are translated on client
-    side into hierarchy with `ATCException` at root."""
+from interface import ATCException
 
-    pass
+def _type_from_typename( typename ) :
 
-def from_typename( typename ) :
-    """Dynamically build, return `ATCException` type given a typename.  If
-    typename given is "ATCException" then `ATCException` type is returned. No
-    guarantee that a created type is real or legal in any sense..."""
+    """Dynamically build and return an `ATCException` type given a typename.
+    If the typename given is "ATCException" then the `ATCException` type is
+    returned.  WARNING: It is not guaranteed that a type created with this
+    function is real or legal in any sense."""
 
-    return ATCException if typename == "ATCException" else globals().setdefault( typename, type( str( typename ), ( ATCException, ), {} ) )
+    if typename == "ATCException" :
+        return ATCException
+    else :
+        module = globals()
+        module[ typename ] = type( str( typename ), ( ATCException, ), {} )
+        return module[ typename ]
 
-def from_status_code( status_code ) :
-    """Dynamically build, return `ATCException` type given HTTP error status
-    code.  If status code is unrecognized, error type like `UnknownErrorNNN` is
-    returned, where NNN is the unknown status code.  If status code passed is
-    unrecognized, throw `ValueError`."""
+def _type_from_status_code( status_code ) :
+
+    """Dynamically build and return an `ATCException` type given an HTTP
+    error status code.  If the status code is unrecognized, an error type
+    like `UnknownErrorNNN` is returned, where NNN is the unknown status
+    code.  If the status code passed is unrecognized and doesn't look 
+    like an actual HTTP error status code, a `ValueError` is thrown."""
 
     http_error_status_codes = {
         400 : "BadRequest"                  , 401 : "Unauthorized"                  , 402 : "PaymentRequired"               ,
@@ -42,4 +47,21 @@ def from_status_code( status_code ) :
         else :
             raise ValueError( "illegal error status code" )
 
-    return from_typename( typename )
+    return _type_from_typename( typename )
+
+def check_for_errors( data, status_code ) :
+
+    """Intercept server and ATC application or service errors and
+    translate them into an appropriate `ATCException` if necessary.
+    Otherwise just return the data."""
+
+    if data is not None and "__error__" in data :
+        error_data = data[ "__error__" ]
+        error_type = _type_from_typename( error_data[ "type" ] )
+        raise error_type( error_data[ "args" ] )
+
+    if status_code is not None and status_code >= 400 :
+        error_type = _type_from_status_code( status_code )
+        raise error_type
+
+    return data
