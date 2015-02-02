@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+"""Extract and post spectra to ATC from an archive file.  For NERSC use only."""
+
 import  argparse
 import  datetime
 import  os
@@ -13,9 +15,9 @@ import  scipy
 import  atc_tools
 import  atc_tools.exceptions
 
-# Command line.
+# Parse command line.
 
-parser = argparse.ArgumentParser( description = "Extract and post spectra to ATC from an archive file (at NERSC ONLY)." )
+parser = argparse.ArgumentParser( description = __doc__ )
 parser.add_argument( "archive_path" , help = "path to archive file"  )
 parser.add_argument( "--test", "-t" , help = "Test mode: Server only validates, no inserts.", action = "store_true" )
 args = parser.parse_args()
