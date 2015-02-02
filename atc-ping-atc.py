@@ -10,8 +10,6 @@ import  atc_tools
 # Parse command line.
 
 parser = argparse.ArgumentParser( description = __doc__, formatter_class = argparse.RawTextHelpFormatter )
-parser.add_argument( "--quiet", "-q", help = "Ping only, skip listing the recent pings.", action = "store_true" )
-
 parser.epilog = """
 ATC hosts a ping service in its REST API.  This service can be used to guess
 whether the ATC application is running normally, or appears to be offline.  A
@@ -26,7 +24,7 @@ simply checks in with ATC about every 10 minutes or so.  This keeps users from
 having to re-authenticate too often (every half-hour or hour or so).  RCT did
 this because he had no control over how Shibboleth was configured at NERSC.
 """
-
+parser.add_argument( "--quiet", "-q", help = "Output warnings and errors only.", action = "store_true" )
 args = parser.parse_args()
 
 # Query for pings and print them if requested.
