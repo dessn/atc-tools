@@ -7,6 +7,10 @@ import  rsa
 from    ..              import  utilities
 from    authenticator   import  Authenticator
 
+def create_keypair( user_id, config_dir, force = False ) :
+    authenticator = RSAAuthenticator( user_id, config_dir )
+    return authenticator.create_keypair( force )
+
 class RSAAuthenticator ( Authenticator ) :
     """RSA-based authenticator."""
 
