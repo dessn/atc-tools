@@ -1,0 +1,9 @@
+include README.md
+include atc-generate-keypair
+include atc-ping-atc
+include atc-register-atel
+include atc-tag-aat
+include atc-tag-simple
+include atc-targets-for-aat
+include setup.py
+recursive-include atc_tools *.py
