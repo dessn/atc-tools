@@ -1,19 +1,21 @@
 #!/usr/bin/env python
 
-import argparse
+"""Generate ATC developer keypair, currently RSA style."""
 
-import atc_tools.authenticators
-import atc_tools.config
+import  argparse
 
-# Command line.
+from    atc_tools.authenticators    import rsa_authenticator
+import  atc_tools.config
 
-parser = argparse.ArgumentParser( description = "Generate ATC developer keypair (RSA style)." )
-parser.add_argument( "--force", "-f", help = "Forced overwrite of any existing keyfiles.", action = "store_true" )
+# Parse command line.
+
+parser = argparse.ArgumentParser( description = __doc__ )
+parser.add_argument( "--force", "-f", help = "Force overwrite of any existing keyfiles.", action = "store_true" )
 args = parser.parse_args()
 
 # We are currently using an RSA keypair system.
 
-public_key_path, private_key_path = atc_tools.authenticators.create_rsa_keypair( force = args.force )
+public_key_path, private_key_path = rsa_authenticator.create_keypair( atc_tools.config.USER_ID(), atc_tools.config.CONFIG_PATH(), args.force )
 
 # Friendly message that tells our users what to do now...
 
