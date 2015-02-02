@@ -43,7 +43,7 @@ class Service ( object ) :
             params[ "include" ] = include
         if exclude is not None :
             params[ "exclude" ] = exclude
-        self._process_request( "GET", _id, params = params )
+        return self._process_request( "GET", _id, params = params )
 
     def list( self, skip = None, limit = None, order = None, include = None, exclude = None, count = False, params = {} ) :
         """Attempt to retrieve a block of multiple documents."""
@@ -65,7 +65,7 @@ class Service ( object ) :
     def post( self, doc, test_mode = False ) :
         """Attempt to create a new document."""
 
-        self._process_request( "POST", data = doc, test_mode = test_mode )
+        return self._process_request( "POST", data = doc, test_mode = test_mode )
 
     def put( self, _id, doc ) :
         """Attempt to replace or update a document with a matching document
@@ -102,7 +102,7 @@ class Service ( object ) :
 
         # The handler signs and executes the request.
 
-        response_data, status_code = self.handler( self.service_url, method, headers, data, params )
+        response_data, status_code = self.handler( self.service_url + path, method, headers, data, params )
 
         # Intercept server and ATC application or service errors and translate
         # them into an appropriate `ATCException` if necessary.  If internal
