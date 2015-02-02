@@ -1,41 +1,33 @@
 #!/usr/bin/env python
 
+"""Create a DES-SN WG target file for AAT to follow-up."""
+
+import  argparse
 import  datetime
 import  sys
 import  time
 
 import  atc_tools
-
-# Lazy property decorator, can't get enough of it.
-
-def lazy( func ) :
-    attr_name = "__" + func.__name__
-    @property
-    def _lazy( obj ) :
-        try :
-            return getattr( obj, attr_name )
-        except AttributeError :
-            setattr( obj, attr_name, func( obj ) )
-            return getattr( obj, attr_name )
-    return _lazy
-
-# Let's make a class of a target list.
+import  atc_tools.config
+import  atc_tools.utilities
 
 class TargetList ( object ) :
 
-    def __init__( self, limit = 500, sleep_secs = 2 ) :
+    def __init__( self, limit = 500, sleep_secs = 2, quiet = False ) :
         self.tag        = "supernova"
         self.limit      = limit
         self.sleep_secs = sleep_secs
+        self.quiet      = quiet
+        self.client     = atc_tools.client()
 
     def __repr__( self ) :
         return self.text
 
-    @lazy
+    @atc_tools.utilities.lazy
     def text( self ) :
         return "%s\n%s" % ( self.header, self.body )
 
-    @lazy
+    @atc_tools.utilities.lazy
     def header( self ) :
         lines = list()
         lines.append( "#TIMESTAMP %sZ"   % self.timestamp.isoformat( " " )   )
@@ -43,7 +35,7 @@ class TargetList ( object ) :
         lines.append( "#CONTACT %s"      % self.contact                      )
         return "\n".join( lines )
 
-    @lazy
+    @atc_tools.utilities.lazy
     def body( self ) :
         lines = list()
         for doc in self.targets :
@@ -56,60 +48,54 @@ class TargetList ( object ) :
             lines.append( "%s,%.6f,%.6f,%.2f,%s" % ( target_id, ra_degrees, dec_degrees, tag_r_magnitude, tag_type ) )
         return "\n".join( lines ) + "\n"
 
-    @lazy
+    @atc_tools.utilities.lazy
     def timestamp( self ) :
         return datetime.datetime.utcnow()
 
-    @lazy
+    @atc_tools.utilities.lazy
     def contact( self ) :
-        print >> sys.stderr, "fetching user's ATC contact information"
+        self.message( "fetching user's ATC contact information" )
         time.sleep( self.sleep_secs )
-        doc = self.users_service.get( atc_tools.config.USER_ID(), include = "email" )
+        doc = self.client.users.get( atc_tools.config.USER_ID(), include = "email" )
         return doc[ "email" ]
 
-    @lazy
+    @atc_tools.utilities.lazy
     def targets( self ) :
 
         docs    = list()
         skip    = 0
         include = [ "value.coordinates.ra.degrees", "value.coordinates.dec.degrees", "value.aat_supernova.r_magnitude", "value.aat_supernova.type" ]
 
-        print >> sys.stderr, "fetching tagged targets ... "
+        self.message( "fetching tagged targets ... " )
         while True :
-            print >> sys.stderr, " ... skip = %-5d, limit = %-5d" % ( skip, self.limit )
+            self.message( " ... skip = %-5d, limit = %-5d" % ( skip, self.limit ) )
             time.sleep( self.sleep_secs )
-            data  = self.targets_service.list( skip, self.limit, include = include, params = { "tag" : "aat_supernova" } )
+            data  = self.client.targets.list( skip, self.limit, include = include, params = { "tag" : "aat_supernova" } )
             chunk = data[ "docs" ]
             if not chunk :
                 break
             docs += chunk
             skip += self.limit
-        print >> sys.stderr, " ... fetched %d targets" % len( docs )
+        self.message( " ... fetched %d targets" % len( docs ) )
         return docs
 
-    @lazy
-    def client( self ) :
-        return atc_tools.default_client()
-
-    @lazy
-    def targets_service( self ) :
-        return self.client.service( "targets" )
-
-    @lazy
-    def users_service( self ) :
-        return self.client.service( "users" )
-
-    @lazy
+    @atc_tools.utilities.lazy
     def output_filename( self ) :
         return "%s.%sZ.dat" % ( self.tag, self.timestamp.isoformat().translate( None, "-:" ) )
 
-if __name__ == "__main__" :
+    def message( self, text ) :
+        if self.quiet :
+            return
+        print text
 
-    import argparse
+# Parse command line.
 
-    parser = argparse.ArgumentParser( description = "Create a SN WG target file for AAT to follow-up." )
-    args = parser.parse_args()
+parser = argparse.ArgumentParser( description = __doc__ )
+parser.add_argument( "--quiet", "-q", help = "Output warnings and errors only.", action = "store_true" )
+args = parser.parse_args()
 
-    target_list = TargetList()
-    with open( target_list.output_filename, "w" ) as stream :
-        stream.write( "%s" % target_list )
+# Create and dump target list.
+
+target_list = TargetList( quiet = args.quiet )
+with open( target_list.output_filename, "w" ) as stream :
+    stream.write( "%s" % target_list )
