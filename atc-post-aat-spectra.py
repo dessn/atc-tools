@@ -187,27 +187,25 @@ for tag in tags :
     print "%-40s %d" % ( tag, tags[ tag ] )
 print len( docs ), "/", count, "of interest"
 
-# Set up the REST client.
+# Start talking to ATC to see which targets do not exist.
 
-client      = atc_tools.default_client()
-posts_svc   = client.service( "posts" )
-targets_svc = client.service( "targets" )
-
-# See which targets do not exist.
+client = atc_tools.client()
 
 for i, doc in enumerate( docs ) :
     target_id = doc[ "target_id" ]
     try :
-        response = targets_svc.get( target_id )
+        response = client.targets.get( target_id )
     except atc_tools.exceptions.NotFound :
         print "Target not found: %s" % target_id
+
+        # Append an inception attachment.
 
         doc[ "incept" ] = dict()
         doc[ "coordinates" ] = dict()
         doc[ "coordinates" ][ "ra"  ] =  ras[ i ]
         doc[ "coordinates" ][ "dec" ] = decs[ i ]
 
-client   = atc_tools.default_client()
-service  = client.service( "posts" )
-response = service.post( docs, test_mode = args.test )
-pprint.pprint( response ) 
+# Post documents.
+
+doc = client.posts.post( docs, test_mode = args.test )
+pprint.pprint( doc )
