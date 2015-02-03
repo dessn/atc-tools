@@ -5,6 +5,7 @@ import  os
 # Scripts to install on all systems.
 
 scripts = [ 
+        "atc"                   ,
         "atc-generate-keypair"  ,
         "atc-ping-atc"          ,
         "atc-register-atel"     ,
