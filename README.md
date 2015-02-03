@@ -36,3 +36,14 @@ bash):
 
 Where `nersc_id` is your NERSC username.  To make this permanent stick it in
 your shell resource login file (.bashrc).
+
+Contributing
+------------
+
+Feel free to submit a pull request if you have a new script you want added
+to `atc-tools.`  Don't worry about whether or not the script is usable at all
+possible sites --- we can handle that in the setup script, or not at all.
+
+If you aren't comfortable with pull requests but you still want to contribute
+a script, go ahead and just email it to me and I will figure out what to do
+with it.
