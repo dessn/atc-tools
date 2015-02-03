@@ -8,7 +8,7 @@ class Client ( object ) :
         self._handler  = handler
         self._services = dict()
 
-    def __getattr__( self, name ) :
+    def __getitem__( self, name ) :
         """Return service."""
 
         try :
@@ -16,3 +16,8 @@ class Client ( object ) :
         except KeyError :
             self._services[ name ] = services.create( name, self._handler )
             return self._services[ name ]
+
+    def __getattr__( self, name ) :
+        """Service as a method."""
+
+        return self[ name ]

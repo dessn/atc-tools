@@ -1,4 +1,4 @@
 include README.md
 include setup.py
 recursive-include atc_tools *.py
-recursive-include scripts atc-*
+recursive-include scripts atc atc-*
