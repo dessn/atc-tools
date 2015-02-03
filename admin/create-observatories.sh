@@ -43,4 +43,4 @@
 # atc.py create observatory LICK     --name="Lick Observatory (3m)"                             --longitude=-121:38:13.7    --latitude=+37:20:34.9  --altitude=1283
 
 # atc.py delete observatory SOAR
-  atc.py create observatory SOAR     --name="Southern Astrophysical Research Telescope (4.1m)"  --longitude=-70:44:01.11    --latitude=-30:14:16.41 --altitude=2738
+# atc.py create observatory SOAR     --name="Southern Astrophysical Research Telescope (4.1m)"  --longitude=-70:44:01.11    --latitude=-30:14:16.41 --altitude=2738

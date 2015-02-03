@@ -95,5 +95,8 @@
 #   atc.py delete user ssallam 
 #   atc.py create user ssallam      "Sahar Allam"               sallam@fnal.gov
 
-    atc.py delete user dltucker  
-    atc.py create user dltucker     "Douglas Tucker"            dtucker@fnal.gov
+#   atc.py delete user dltucker  
+#   atc.py create user dltucker     "Douglas Tucker"            dtucker@fnal.gov
+
+#   atc.py delete user dbrout  
+#   atc.py create user dbrout       "Dillon Brout"              dbrout@physics.upenn.edu
