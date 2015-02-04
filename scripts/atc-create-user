@@ -1,0 +1,90 @@
+#!/usr/bin/env python
+
+"""Leverage NERSC Web Toolkit to expedite adding a user to ATC."""
+
+# Only works if you are special.
+
+import  argparse
+import  netrc
+import  pprint
+import  sys
+
+import  requests
+
+import  atc_tools
+import  atc_tools.utilities
+
+class NewtUserLookup ( object ) :
+    """Punch up NERSC user data through NEWT given user ID."""
+
+    def __init__( self, user_id ) :
+        self.user_id = user_id
+
+    @atc_tools.utilities.lazy
+    def doc( self ) :
+        return dict( _id = self.user_id, name = self.name, email = self.email )
+
+    @atc_tools.utilities.lazy
+    def name( self ) :
+        return self.user_data[ "fullname" ]
+
+    @atc_tools.utilities.lazy
+    def email( self ) :
+        return self.user_data[ "email" ]
+
+    @atc_tools.utilities.lazy
+    def user_data( self ) :
+        response = requests.get( "%s/account/user/%s/persons" % ( self.newt_base_url, self.user_id ), cookies = self.cookies )
+        response_data = response.json()
+        return response_data[ "items" ][ 0 ]
+
+    @atc_tools.utilities.lazy
+    def cookies( self ) :
+        response = requests.post( "%s/login/" % self.newt_base_url, data = self.credentials )
+        return response.cookies
+
+    @atc_tools.utilities.lazy
+    def newt_base_url( self ) :
+        return "https://newt.nersc.gov/newt"
+
+    @atc_tools.utilities.lazy
+    def credentials( self ) :
+        authenticators = netrc.netrc().authenticators( "newt.nersc.gov" )
+        return dict( username = authenticators[ 0 ], password = authenticators[ 2 ] )
+
+# Parse command line.
+
+parser = argparse.ArgumentParser( description = __doc__ )
+parser.add_argument( "user_id"      , help = "NERSC user name to search for."                                        )
+parser.add_argument( "--force", "-f", help = "Skip confirmation, create user without delay.", action = "store_true"  )
+parser.add_argument( "--test" , "-t", help = "Test mode: Display user data only, no insert.", action = "store_true"  )
+args = parser.parse_args()
+
+# NERSC user data.
+
+lookup = NewtUserLookup( args.user_id )
+
+print
+print "_id   : %s" % lookup.user_id
+print "name  : %s" % lookup.name
+print "email : %s" % lookup.email
+print
+
+# Exit if test mode.
+
+if args.test :
+    sys.exit( 0 )
+
+# Confirm if not force mode.
+
+if not args.force :
+    confirmation = raw_input( "\033[91m\033[1m\033[4mPLEASE TYPE YES TO CONFIRM NOW:\033[0m\n---> " )
+    if confirmation != "YES" :
+        print "ABORT: User not created."
+        sys.exit( 0 )
+
+# Create the user in ATC.
+
+response = atc_tools.client().users.post( lookup.doc )
+print
+pprint.pprint( response )

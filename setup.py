@@ -6,6 +6,7 @@ import  os
 
 scripts = [ 
         "atc"                   ,
+        "atc-create-user"       ,
         "atc-generate-keypair"  ,
         "atc-ping-atc"          ,
         "atc-register-atel"     ,
