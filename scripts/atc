@@ -25,6 +25,8 @@ def correct_service_name( service_name ) :
         return "posts"
     elif service_name == "comment" :
         return "comments"
+    elif service_name == "target" :
+        return "targets"
     else :
         return service_name
 
