@@ -41,7 +41,11 @@ def handle_get( args ) :
     return service_method( args.service ).get( args._id, args.include, args.exclude )
 
 def handle_list( args ) :
-    data = service_method( args.service ).list( args.skip, args.limit, args.order, args.include, args.exclude, args.count )
+    if args.params is None :
+        params = None
+    else :
+        params = dict( [ param.split( "=" ) for param in args.params ] )
+    data = service_method( args.service ).list( args.skip, args.limit, args.order, args.include, args.exclude, args.count, params )
     if "count" in data :
         return data[ "count" ]
     else :
@@ -132,6 +136,10 @@ list_parser.add_argument( "--exclude", "-e"                             ,
 list_parser.add_argument( "--count", "-c"                               , 
         help   = "return only count of matched documents [%(default)s]" , 
         action = "store_true"                                           )
+
+list_parser.add_argument( "--params", "-p"                              ,
+        help   = "KEY=VALUE query parameters [%(default)s]"             ,
+        nargs  = "+"                                                    )
 
 # Delete command parser.
 
