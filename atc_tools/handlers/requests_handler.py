@@ -30,7 +30,7 @@ class RequestsHandler ( Handler ) :
         request.headers[ "ATC-Signature" ] = self.authenticator( request.headers[ "ATC-Request-Time" ], method, request.url, data )
 
         # Send request and receive JSON response.
-        
+
         response = session.send( request )
         try :
             response_data = response.json()
