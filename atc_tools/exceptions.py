@@ -45,8 +45,8 @@ class Module ( object ) :
                 typename = "UnknownError%d" % status_code
             else :
                 raise ValueError( "illegal error status code" )
-    
-        return from_typename( typename )
+   
+        return self.from_typename( typename )
 
     def __getattr__( self, name ) :
         return self.from_typename( name )
