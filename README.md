@@ -12,7 +12,22 @@ recommend pip:
     pip install rsa
     pip install requests
 
-That should do it.
+More recent versions of requests may emit warnings when atc-tools sends messages to ATC.  This may not be an issue for you depending on what version of Python you
+have installed, so I recommend trying the above first.  
+
+If the warnings still happen and they bug you, I have seen a few solutions
+proposed.  One is to do the install like this:
+
+    pip install requests[security]
+
+(may need quotes) which will install additional dependencies that address the
+issues.  Another is to just downgrade your requests installation like
+
+    pip install requests==2.5.3
+
+The former suggestion is probably better than the latter.  See 
+[this thread](http://stackoverflow.com/questions/29099404/ssl-insecureplatform-error-when-using-requests-package)
+for more detail.
 
 Setting Up
 ----------
