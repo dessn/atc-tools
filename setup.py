@@ -8,6 +8,7 @@ scripts = [
         "atc"                   ,
         "atc-create-user"       ,
         "atc-generate-keypair"  ,
+        "atc-incept-posts"      ,
         "atc-ping-atc"          ,
         "atc-register-atel"     ,
         "atc-tag-aat"           ,
