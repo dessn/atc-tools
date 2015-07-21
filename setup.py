@@ -8,7 +8,6 @@ scripts = [
         "atc"                   ,
         "atc-create-user"       ,
         "atc-generate-keypair"  ,
-        "atc-incept-posts"      ,
         "atc-ping-atc"          ,
         "atc-register-atel"     ,
         "atc-tag-aat"           ,
@@ -27,7 +26,7 @@ scripts = [ "scripts/%s" % script for script in scripts ]
 
 # Package and sub-packages.
 
-packages = [ "atc_tools", "atc_tools.authenticators", "atc_tools.handlers" ]
+packages = [ "atc_tools", "atc_tools.authenticators", "atc_tools.handlers", "atc_tools.ext" ]
 
 # Package setup.  The requirements may be too stringent and older versions
 # may be alright.  Haven't checked.
