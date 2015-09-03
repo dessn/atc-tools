@@ -96,7 +96,7 @@ def create_lcfit_post( target_id,
     
     lcfit[ "zprior"     ] = zprior 
     lcfit[ "psnid_run"  ] = psnid_run 
-    lcfit[ "itype_best" ] = itype_best 
+    lcfit[ "itype_best" ] = int(itype_best)
     lcfit[ "pbayes"     ] = bayes
     lcfit[ "fitprob"    ] = fitprob
     lcfit[ "zfit"       ] = zfit
@@ -131,7 +131,7 @@ def create_lcfit_post( target_id,
 
 
     # Attach to the document.
-
+    
     doc[ "lcfit" ] = lcfit
     return doc
 
