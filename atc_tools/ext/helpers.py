@@ -97,7 +97,7 @@ def create_lcfit_post( target_id,
     lcfit[ "zprior"     ] = zprior 
     lcfit[ "psnid_run"  ] = psnid_run 
     lcfit[ "itype_best" ] = itype_best 
-    lcfit[ "pbayes"     ] = pbayes
+    lcfit[ "pbayes"     ] = bayes
     lcfit[ "fitprob"    ] = fitprob
     lcfit[ "zfit"       ] = zfit
    
