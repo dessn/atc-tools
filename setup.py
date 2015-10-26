@@ -7,12 +7,14 @@ import  os
 scripts = [ 
         "atc"                   ,
         "atc-create-user"       ,
+        "atc-delete-post"       ,
         "atc-generate-keypair"  ,
         "atc-ping-atc"          ,
         "atc-register-atel"     ,
         "atc-tag-aat"           ,
         "atc-tag-simple"        ,
-        "atc-targets-for-aat"
+        "atc-targets-for-aat"   ,
+        "atc-untag-aat"
         ]
 
 # Additional scripts for NERSC installations.
@@ -40,3 +42,4 @@ setup(  name            =   "atc-tools"                                     ,
         requires        =   [ "rsa (>=3.1.4)", "requests (>=2.4.1)" ]       ,
         packages        =   packages                                        ,
         scripts         =   scripts                                         )
+
