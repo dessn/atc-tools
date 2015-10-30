@@ -34,7 +34,7 @@ packages = [ "atc_tools", "atc_tools.authenticators", "atc_tools.handlers", "atc
 # may be alright.  Haven't checked.
 
 setup(  name            =   "atc-tools"                                     ,
-        version         =   "0.98"                                          ,
+        version         =   "1.0.0"                                         ,
         description     =   "Python ATC client reference implementation."   ,
         author          =   "R. C. Thomas"                                  ,
         author_email    =   "rcthomas@lbl.gov"                              ,
