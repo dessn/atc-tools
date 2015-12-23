@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+
+"""Apply an aat_supernova tag to a target or list of targets."""
+
+import  argparse
+import  pprint
+
+import  atc_tools
+
+parser = argparse.ArgumentParser( description = __doc__ )
+parser.add_argument( "csv_file"     , help = "CSV file containing targets to be untagged."                            )
+parser.add_argument( "--quiet", "-q", help = "Output warnings and errors only."               , action = "store_true" )
+parser.add_argument( "--test" , "-t", help = "Test mode: Server only validates, no deletions.", action = "store_true" )
+args = parser.parse_args()
+
+docs = list()
+with open( args.csv_file, "r" ) as stream :
+
+    # Not using the csv module because I don't quite get it...
+
+    for line in stream :
+        tokens = line.strip().split( "," )
+        if not tokens :
+            continue
+        if tokens[ 0 ].startswith( "#" ) :
+            continue
+        if len( tokens ) < 1 :
+            raise ValueError( "not enough fields:\n%s" % line )
+
+        # Build document. Removal condition goes last in case it's got commas
+        # in it.  Probably not 100% fool-proof.  Note that types matter.
+        
+        doc = dict()
+        doc[ "target_id"     ] = tokens[ 0 ]
+
+        doc[ "aat_supernova" ] = False
+
+        docs.append( doc )
+
+# Post documents, optionally display response.
+
+doc = atc_tools.client().posts.post( docs, test_mode = args.test )
+if not args.quiet :
+    pprint.pprint( doc )

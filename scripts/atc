@@ -52,6 +52,7 @@ def handle_list( args ) :
         return data[ "docs" ]
 
 def handle_update( args ) :
+    service = args.service
     doc = vars( args )
     del doc[ "action"  ]
     del doc[ "service" ]
@@ -59,7 +60,7 @@ def handle_update( args ) :
     _id = doc.pop( "_id" )
     if "id" in doc :
         doc[ "_id" ] = doc.pop( "id" )
-    return service_method( args.service ).put( _id, doc )
+    return service_method( service ).put( _id, doc )
 
 def handle_delete( args ) :
     return service_method( args.service ).delete( args._id )
