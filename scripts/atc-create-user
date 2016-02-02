@@ -37,6 +37,8 @@ class NewtUserLookup ( object ) :
         response = requests.get( "%s/account/user/%s/persons" % ( self.newt_base_url, self.user_id ), cookies = self.cookies )
         response_code = response.status_code
         if response_code >= 400 :
+            if response_code == 403 :
+                print "Have you changed your NERSC password recently?"
             raise atc_tools.exceptions.from_status_code( response_code )
         response_data = response.json()
         return response_data[ "items" ][ 0 ]
