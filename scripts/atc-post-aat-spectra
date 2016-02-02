@@ -18,8 +18,9 @@ import  atc_tools.exceptions
 # Parse command line.
 
 parser = argparse.ArgumentParser( description = __doc__ )
-parser.add_argument( "archive_path" , help = "path to archive file"  )
-parser.add_argument( "--test", "-t" , help = "Test mode: Server only validates, no inserts.", action = "store_true" )
+parser.add_argument( "archive_path"    , help = "path to archive file"  )
+parser.add_argument( "--test"   , "-t" , help = "Test mode: Server only validates, no inserts.", action = "store_true" )
+parser.add_argument( "--workdir", "-w" , help = "Working directory [default: current working directory].", default = os.getcwd() )
 args = parser.parse_args()
 
 # Archive name required to be in atc-uploads/multi-target/aat.  Note that this
@@ -39,7 +40,7 @@ with tarfile.open( args.archive_path, "r:gz" ) as archive :
     
         # Progress meter newline.
     
-        if i % 80 == 0 :
+        if i % 120 == 0 :
             sys.stderr.write( "\n" )
     
         # Keep if it looks right.
@@ -49,9 +50,12 @@ with tarfile.open( args.archive_path, "r:gz" ) as archive :
         try :
             top, status, version, field, filename = tokens
             tokens = filename.split( "_" )
-            if status == "reduced" and tokens[ 0 ] == field and tokens[ 2 ] == version and filename.endswith( ".fits" ) :
-                members.append( member )
-                sys.stderr.write( "*" )
+            if status == "reduced" and tokens[ 0 ] == field and filename.endswith( ".fits" ) :
+                if tokens[ 2 ] == version or tokens[ 1 ] == "combined" :
+                    members.append( member )
+                    sys.stderr.write( "*" )
+                else :
+                    sys.stderr.write( "." )
             else :
                 sys.stderr.write( "." )
         except ValueError :
@@ -66,10 +70,11 @@ with tarfile.open( args.archive_path, "r:gz" ) as archive :
     
     members.sort( key = lambda member : member.name.count( "+" ) )
     members.sort( key = lambda member : member.name.split( "/" )[ 2 ] )
+    members.sort( key = lambda member : member.name.count( "combined" ) )
     for member in members :
         print member.name
 
-    archive.extractall( os.environ[ "GSCRATCH" ], members = members )
+    archive.extractall( args.workdir, members = members )
 
 # Iterate over extracted archive members to build posts.
 
@@ -83,7 +88,7 @@ for member in members :
 
     # Open FITS file.
 
-    file_name = "%s/%s" % ( os.environ[ "GSCRATCH" ], member.name )
+    file_name = "%s/%s" % ( args.workdir, member.name )
     hdulist = fits.open( file_name )
 
     # Wavelength axis.
@@ -209,5 +214,11 @@ for i, doc in enumerate( docs ) :
 
 # Post documents.
 
-doc = client.posts.post( docs, test_mode = args.test )
-pprint.pprint( doc )
+print "POSTING..."
+
+skip = 100
+for start in range( 0, len( docs ), skip ) :
+    end = start + skip
+    print start, end
+    doc = client.posts.post( docs[ start : end ], test_mode = args.test )
+    pprint.pprint( doc )
